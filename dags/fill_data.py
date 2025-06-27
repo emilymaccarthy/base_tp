@@ -1,37 +1,49 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 import pendulum
-import datetime
 from td7.data_generator import DataGenerator
 from td7.schema import Schema
 
-EVENTS_PER_DAY = 10_000
+ENCUESTAS_POR_DIA = 100
 
-
-def generate_data(base_time: str, n: int):
-    """Generates synth data and saves to DB.
-
-    Parameters
-    ----------
-    base_time: strpoetry export --without-hashes --format=requirements.txt > requirements.txt
-
-        Base datetime to start events from.
-    n : int
-        Number of events to generate.
-    """
+def task_insertar_personas():
     generator = DataGenerator()
     schema = Schema()
-    people = generator.generate_people(100)
-    schema.insert(people, "people")
+    personas = generator.generate_people(100)
+    schema.insert(personas, "persona")
 
-    people_sample = schema.get_people(100)
-    sessions = generator.generate_sessions(
-        people_sample,
-        datetime.datetime.fromisoformat(base_time),
-        datetime.timedelta(days=1),
-        n,
-    )
-    schema.insert(sessions, "sessions")
+def task_insertar_religiones():
+    generator = DataGenerator()
+    schema = Schema()
+    if len(religiones) == 0:
+        religiones = generator.generate_religiones()
+        schema.insert(religiones, "religion")
+    else:
+        print("Ya existen religiones, no se inserta nada.")
+    
+def task_insertar_frecuencia():
+    generator = DataGenerator()
+    schema = Schema()
+    if len(frecuencia) == 0:
+        frecuencia = generator.generate_frecuencia()
+        schema.insert(frecuencia, "frecuencia")
+    else:
+        print("Ya existen religiones, no se inserta nada.")
+
+
+def task_insertar_encuestas(base_time: str, n: int):
+    generator = DataGenerator()
+    schema = Schema()
+    
+    personas = schema.get_people(n)
+    religiones = schema.get_religiones()
+    frecuencia = schema.get_frecuencia()
+    #religiones = generator.generate_religiones()
+    #frecuencia = generator.generate_frecuencia()
+    
+    encuestas = generator.generate_encuestas(personas, religiones, frecuencia, n)
+    schema.insert(encuestas, "encuesta")
+
 
 
 with DAG(
@@ -40,8 +52,28 @@ with DAG(
     schedule_interval="@daily",
     catchup=True,
 ) as dag:
-    op = PythonOperator(
-        task_id="task",
-        python_callable=generate_data,
-        op_kwargs=dict(n=EVENTS_PER_DAY, base_time="{{ ds }}"),
+
+    insertar_personas = PythonOperator(
+        task_id="insertar_personas",
+        python_callable=task_insertar_personas
     )
+
+    insertar_religiones = PythonOperator(
+        task_id="insertar_religiones",
+        python_callable=task_insertar_religiones
+    )
+    
+    insertar_frecuencia = PythonOperator(
+        task_id="insertar_frecuencia",
+        python_callable=task_insertar_frecuencia
+    )
+
+    insertar_encuestas = PythonOperator(
+        task_id="insertar_encuestas",
+        python_callable=task_insertar_encuestas,
+        op_kwargs=dict(n=ENCUESTAS_POR_DIA, base_time="{{ ds }}"),
+    )
+    
+  
+
+    [insertar_personas, insertar_religiones, insertar_frecuencia] >> insertar_encuestas

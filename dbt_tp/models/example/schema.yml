@@ -1,20 +1,30 @@
 version: 2
 
-models:
-  - name: my_first_dbt_model
-    description: "A starter dbt model"
-    columns:
-      - name: id
-        description: "The primary key for this table"
-        data_tests:
-          - unique
-          - not_null
+sources:
+  - name: data_encuesta
+    tables:
+      - name: encuesta
+      - name: persona
+      - name: religion
+      - name: frecuencia
 
-  - name: my_second_dbt_model
-    description: "A starter dbt model"
+models:
+  - name: encuestas_totales
+    description: "Encuestas con datos combinados de personas, religión y frecuencias"
     columns:
-      - name: id
-        description: "The primary key for this table"
-        data_tests:
-          - unique
-          - not_null
+      - name: id_encuesta
+        tests: [unique, not_null]
+      - name: dni
+        tests: [not_null]
+      - name: nombre_religion
+        tests: [not_null]
+
+  - name: promedios_por_religion
+    description: "Promedios de espiritualidad y religiosidad por religión"
+    columns:
+      - name: nombre_religion
+        tests: [not_null]
+      - name: promedio_espiritualidad
+        tests: []
+      - name: promedio_religiosidad
+        tests: []

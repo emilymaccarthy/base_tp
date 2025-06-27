@@ -15,20 +15,25 @@ def task_insertar_personas():
 def task_insertar_religiones():
     generator = DataGenerator()
     schema = Schema()
-    if len(religiones) == 0:
-        religiones = generator.generate_religiones()
-        schema.insert(religiones, "religion")
-    else:
-        print("Ya existen religiones, no se inserta nada.")
+    religiones = generator.generate_religiones()
+    schema.insert(religiones, "religion")
+    
+    #if len(religiones) == 0:
+    #    religiones = generator.generate_religiones()
+    #    schema.insert(religiones, "religion")
+    #else:
+    #    print("Ya existen religiones, no se inserta nada.")
     
 def task_insertar_frecuencia():
     generator = DataGenerator()
     schema = Schema()
-    if len(frecuencia) == 0:
-        frecuencia = generator.generate_frecuencia()
-        schema.insert(frecuencia, "frecuencia")
-    else:
-        print("Ya existen religiones, no se inserta nada.")
+    frecuencia = generator.generate_frecuencia()
+    schema.insert(frecuencia, "frecuencia")
+    #if len(frecuencia) == 0:
+    #    frecuencia = generator.generate_frecuencia()
+    #    schema.insert(frecuencia, "frecuencia")
+    #else:
+    #    print("Ya existen religiones, no se inserta nada.")
 
 
 def task_insertar_encuestas(base_time: str, n: int):

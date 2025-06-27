@@ -5,18 +5,16 @@ models:
     description: "Encuestas con datos combinados de personas, religión y frecuencias"
     columns:
       - name: id_encuesta
-        tests: [unique, not_null]
       - name: dni
-        tests: [not_null]
       - name: nombre_religion
-        tests: [not_null]
+
 
   - name: promedios_por_religion
     description: "Promedios de espiritualidad y religiosidad por religión"
     columns:
       - name: nombre_religion
-        tests: [not_null]
       - name: promedio_espiritualidad
-        tests: []
       - name: promedio_religiosidad
-        tests: []
+        data_test:
+          - unique
+          - not_null

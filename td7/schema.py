@@ -18,7 +18,6 @@ class Schema:
     def get_encuestas(self) -> Records:
         return self.db.run_select("SELECT * FROM encuesta")
     
-
     def get_frecuencia(self) -> Records:
         return self.db.run_select("SELECT * FROM frecuencia")
 

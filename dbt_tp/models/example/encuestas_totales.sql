@@ -4,7 +4,6 @@ select
     e.id_encuesta,
     e.fecha,
     p.dni,
-
     p.genero,
     r.nombre_religion,
     r.teismo,

@@ -113,7 +113,6 @@ class DataGenerator:
         for i in range(n):
             person = random.choice(people)
             religion = random.choice(religiones)["nombre_religion"]
-            frecuencia_elegida = random.choice(frecuencia)
             encuestas.append({
                 "dni_encuestado": person["dni"],
                 "id_encuesta": i + 1,
@@ -138,10 +137,10 @@ class DataGenerator:
                 "opinion_relaciones_genero": self.fake.text(max_nb_chars=100),
                 "opinion_familia": self.fake.text(max_nb_chars=100),
                 "impacto_pandemia": self.fake.text(max_nb_chars=100),
-                "frecuencia_asistencia_lugares_religiosos": frecuencia_elegida["id_frecuencia"],
-                "frecuencia_experiencias_religiosas": frecuencia_elegida["id_frecuencia"],
-                "frecuencia_tv_religiosa": frecuencia_elegida["id_frecuencia"],
-                "frecuencia_lectura_sagrada": frecuencia_elegida["id_frecuencia"],
+                "frecuencia_asistencia_lugares_religiosos": random.choice(frecuencia)["id_frecuencia"],
+                "frecuencia_experiencias_religiosas": random.choice(frecuencia)["id_frecuencia"],
+                "frecuencia_tv_religiosa": random.choice(frecuencia)["id_frecuencia"],
+                "frecuencia_lectura_sagrada": random.choice(frecuencia)["id_frecuencia"],
                 "nombre_religion_actual": religion
             })
         return encuestas

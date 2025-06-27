@@ -1,4 +1,4 @@
--- pensar en los on delete cascade, los not null 
+ -- pensar en los on delete cascade, los not null 
 -------------------- Armado del database ------------------------------
 -- opciones limitadas predefinidas 
 

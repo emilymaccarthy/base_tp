@@ -1,13 +1,5 @@
 version: 2
 
-sources:
-  - name: data_encuesta
-    tables:
-      - name: encuesta
-      - name: persona
-      - name: religion
-      - name: frecuencia
-
 models:
   - name: encuestas_totales
     description: "Encuestas con datos combinados de personas, religión y frecuencias"
